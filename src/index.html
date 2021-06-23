@@ -7,8 +7,8 @@
     <title>Document</title>
     <script src="/socket.io/socket.io.js"></script>
 </head>
-<body><center>
-
+<body onload="counter()"><center>
+        <label id="User"></label><hr>
         <Button style="background-color:darkred;" id="btn" value="red" onclick="sendMessage(this.value)"></Button>
         <Button style="background-color:mediumblue" id="btn" value="blue" onclick="sendMessage(this.value)"></Button>
         <Button style="background-color:green" id="btn" value="green" onclick="sendMessage(this.value)"></Button>
@@ -19,6 +19,20 @@
     </center>
     <script>
         const socket=io()
+
+        
+        function counter(){
+            socket.emit('displayUser')
+        }
+
+        socket.on('onlineUser', function(data) {
+        document.getElementById('User').innerHTML="total Online User: "+data;});
+
+        socket.on('disconnectedUser', function(data) {
+        document.getElementById('User').innerHTML="total Online User: "+data;});
+
+
+
         function sendMessage(clicked_value){
             socket.emit('countBtn',clicked_value);
         }

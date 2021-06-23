@@ -10,6 +10,12 @@ app.get('/', (req, res) => {
 });
 //start a socket io server.
 io.on('connection', (socket) => {
+  client.incr('counter', function (err, counter1) {})
+  socket.on('displayUser', () => {
+      client.get('counter', (err, data) => {
+          io.emit('onlineUser', data);
+      })
+  });
   socket.on('countBtn', function (clicked_value) {
     if (clicked_value == 'red') {
       client.incr('counterRed');
@@ -28,6 +34,11 @@ io.on('connection', (socket) => {
       })
     }
   });
+  socket.on('disconnect', () => {
+    client.decr('counter', (err, counter) => {
+        io.emit('disconnectedUser', counter);
+    })
+});
 });
 
 server.listen(3001, () => {
