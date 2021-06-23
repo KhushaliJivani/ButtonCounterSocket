@@ -1,0 +1,37 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <script src="/socket.io/socket.io.js"></script>
+</head>
+<body><center>
+
+        <Button style="background-color:darkred;" id="btn" value="red" onclick="sendMessage(this.value)"></Button>
+        <Button style="background-color:mediumblue" id="btn" value="blue" onclick="sendMessage(this.value)"></Button>
+        <Button style="background-color:green" id="btn" value="green" onclick="sendMessage(this.value)"></Button>
+        <hr>
+        <label id="red"></label>
+        <label id="blue"></label>
+        <label id="green"></label>
+    </center>
+    <script>
+        const socket=io()
+        function sendMessage(clicked_value){
+            socket.emit('countBtn',clicked_value);
+        }
+        socket.on('redCount',function(data){
+            document.getElementById('red').innerHTML="counter for red: "+data;
+        })
+        socket.on('blueCount',function(data){
+            document.getElementById('blue').innerHTML="counter for blue: "+data;
+        })
+        socket.on('greenCount',function(data){
+            document.getElementById('green').innerHTML="counter for green: "+data;
+        })  
+
+    </script>
+</body>
+</html>
